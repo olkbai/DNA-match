@@ -1,3 +1,6 @@
+#Author: OB
+#Created: 2024-06-15
+
 #The project is designed to search for specific sequences in a user-provided DNA string and outputting the positions and count of these sequences.
 
 # counts a number of motifs found
