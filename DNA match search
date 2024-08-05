@@ -1,0 +1,69 @@
+#The project is designed to search for specific sequences in a user-provided DNA string and outputting the positions and count of these sequences.
+
+# counts a number of motifs found
+def pattern_count(dna_sequence, pattern):  
+    count = 0  # variable for motif counts
+    for i in range(len(dna_sequence)-len(pattern)+1):
+        '''iterates over (DNA length - length of motif) 
+        in order not to exceed the edge'''
+        if pattern == dna_sequence[i:i+len(pattern)]:
+            '''if motif matches DNA sequence 
+            from index 0 till (i + len(pattern) -1 '''
+            count = count+1  # update the variable for motif counts
+    return count
+
+# identifies positions of found pattern matches
+def compare_patterns(dna_seq, pattern):
+    regions = []  # list for an output where starting positions should be stored
+
+    for i in range(len(dna_seq) - len(pattern) + 1):
+        if pattern == dna_seq[i:i + len(pattern)]:
+            regions.append(i)  # adds found positions for motifs in a list
+    return regions
+
+# identifies an eligible sequence
+def valid_sequence(sequence):
+    valid1 = "ATCG"  # accepts an upper case input
+    valid2 = "atcg"  # accepts a lower case input
+    for base in sequence:
+        if base not in valid1 and base not in valid2:
+            return False
+    return True
+
+
+def main():
+    dna_seq = input("Enter a DNA sequence: ")
+    while not valid_sequence(dna_seq): # while the entered motif is not valid -> False
+        print("This DNA sequence is not valid!")
+        dna_seq = input("Enter a DNA sequence: ")
+
+    pattern1 = input("Enter a first motif: ")
+    pattern2 = input("Enter a second motif or press ENTER to skip it: ")
+
+    while not valid_sequence(pattern1) or not valid_sequence(pattern2):  # while the entered motif is not valid -> False
+        print("This motif sequence is not valid!")
+        pattern = input("Enter a motif: ")
+
+    positions1 = compare_patterns(dna_seq, pattern1)  # positions for first pattern
+    positions2 = compare_patterns(dna_seq, pattern2)  # positions for second pattern
+    counts1 = pattern_count(dna_seq, pattern1)  # counts for first pattern
+    counts2 = pattern_count(dna_seq, pattern2)  # counts for second pattern
+    print()
+    print("The number of found matches for " + '\033[94m', str(pattern1), '\033[0m' + " is: " + '\x1b[95m', str(counts1), '\x1b[0m')
+    print("The positions of found matches for " + '\033[94m', str(pattern1), '\033[0m' + " are: " + '\x1b[95m', str(positions1), '\x1b[0m')
+    
+    if not positions1:  # if no positions for pattern1 found
+        print("The motif " + '\033[94m' + str(pattern1) + '\033[0m' + " was not found")
+
+    print()
+    while pattern2:  # checks if pattern2 is not empty
+        print("The number of found matches for " + '\033[94m', str(pattern2), '\033[0m' + " is: " + '\x1b[95m', str(counts2), '\x1b[0m')
+        print("The positions of found matches for " + '\033[94m', str(pattern2), '\033[0m' + " are: " + '\x1b[95m', str(positions2), '\x1b[0m')
+        break
+
+    if not positions2:  # if no positions for pattern2 found
+        print("The motif " + '\033[94m' + str(pattern2) + '\033[0m' + " was not found")
+
+
+if __name__ == "__main__":
+    main()
